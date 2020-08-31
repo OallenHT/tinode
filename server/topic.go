@@ -769,6 +769,12 @@ func (t *Topic) handleBroadcast(msg *ServerComMessage) {
 			return
 		}
 
+		shield := 0
+		if msg.Data.Content == "NMSL" {
+			// 0/null--正常显示；1--警告；2--屏蔽
+			shield = 2
+		}
+
 		asUser := types.ParseUserId(msg.Data.From)
 		userData, userFound := t.perUser[asUser]
 		// Anyone is allowed to post to 'sys' topic.
@@ -785,12 +791,13 @@ func (t *Topic) handleBroadcast(msg *ServerComMessage) {
 		} else {
 			// Save to DB at master topic.
 			if err := store.Messages.Save(&types.Message{
-				ObjHeader: types.ObjHeader{CreatedAt: msg.Data.Timestamp},
-				SeqId:     t.lastID + 1,
-				Topic:     t.name,
-				From:      asUser.String(),
-				Head:      msg.Data.Head,
-				Content:   msg.Data.Content}, (userData.modeGiven & userData.modeWant).IsReader()); err != nil {
+				ObjHeader:   types.ObjHeader{CreatedAt: msg.Data.Timestamp},
+				SeqId:       t.lastID + 1,
+				Topic:       t.name,
+				From:        asUser.String(),
+				Head:        msg.Data.Head,
+				Content:     msg.Data.Content,
+				Shieldstate: shield}, (userData.modeGiven & userData.modeWant).IsReader()); err != nil {
 
 				log.Printf("topic[%s]: failed to save message: %v", t.name, err)
 				msg.sess.queueOut(ErrUnknown(msg.Id, t.original(asUid), msg.Timestamp))
@@ -2083,14 +2090,9 @@ func (t *Topic) replyGetData(sess *Session, asUid types.Uid, id string, req *Msg
 		if messages != nil {
 			count = len(messages)
 
-			var _ int
 			for i := range messages {
 				mm := &messages[i]
 
-				if mm.Content == "NMSL" {
-					mm.Content = "****"
-					_ = i
-				}
 				sess.queueOut(&ServerComMessage{Data: &MsgServerData{
 					Topic:     toriginal,
 					Head:      mm.Head,
