@@ -1,0 +1,92 @@
+{
+  "name": "tinode-webapp",
+  "description": "Tinode messenger for the web",
+  "version": "0.16.7",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tinode/example-react-js.git"
+  },
+  "scripts": {
+    "build": "npm run vers && npm run build:prod && npm run build:dev && npm run build:css && npm run build:i18n",
+    "build:css": "postcss css/base.css > css/base.min.css",
+    "build:dev": "webpack --mode development",
+    "build:prod": "webpack --mode production",
+    "build:i18n": "node scripts/flatten-messages.js",
+    "vers": "node scripts/gen-version.js"
+  },
+  "browserslist": "> 0.5%, not IE 11",
+  "files": [
+    "src/index.js",
+    "src/config.js",
+    "src/views/*.jsx",
+    "src/widgets/*.jsx",
+    "src/lib/*.js",
+    "src/i18n/*.json",
+    "umd/index.prod.js",
+    "umd/index.prod.js.map",
+    "umd/index.dev.js",
+    "umd/index.dev.js.map",
+    "umd/tinode.prod.js",
+    "umd/tinode.dev.js",
+    "audio/msg.mp3",
+    "css/base.css",
+    "css/base.min.css",
+    "img/bg_messages.png",
+    "img/logo.svg",
+    "img/logo32x32.png",
+    "img/logo32x32a.png",
+    "img/logo96.png",
+    "img/logo192.png",
+    "img/badge96.png",
+    "img/broken_image.png",
+    "img/og-logo.jpeg",
+    "index-dev.html",
+    "index.html",
+    "manifest.json",
+    "service-worker.js",
+    "firebase-init.js",
+    "web-desktop-2.png",
+    "web-mob-chat-1.png",
+    "web-mob-contacts-1.png",
+    "web-mob-info-1.png",
+    "web-mob-new-chat-1.png"
+  ],
+  "keywords": [
+    "chat",
+    "instant-messenger",
+    "message",
+    "messenger",
+    "react",
+    "web"
+  ],
+  "main": "umd/index.prod.js",
+  "bugs": {
+    "url": "https://github.com/tinode/example-react-js/issues"
+  },
+  "homepage": "https://github.com/tinode/chat",
+  "email": "info@tinode.co",
+  "author": "Tinode Authors <info@tinode.co>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "firebase": "^7.16.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-intl": "^4.7.6",
+    "tinode-sdk": "^0.16.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-react-intl": "^7.8.2",
+    "browserslist": "^4.13.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "cssnano": "^4.1.10",
+    "postcss": "^7.0.32",
+    "postcss-cli": "^7.1.1",
+    "terser-webpack-plugin": "^3.0.7",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
