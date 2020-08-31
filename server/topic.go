@@ -769,12 +769,6 @@ func (t *Topic) handleBroadcast(msg *ServerComMessage) {
 			return
 		}
 
-		shield := 0
-		if msg.Data.Content == "NMSL" {
-			// 0/null--正常显示；1--警告；2--屏蔽
-			shield = 2
-		}
-
 		asUser := types.ParseUserId(msg.Data.From)
 		userData, userFound := t.perUser[asUser]
 		// Anyone is allowed to post to 'sys' topic.
